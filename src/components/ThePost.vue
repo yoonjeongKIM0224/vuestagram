@@ -61,4 +61,4 @@ export default {
   color: grey;
   margin-top: -8px;
 } 
-</style>../assets/postData.js
+</style>

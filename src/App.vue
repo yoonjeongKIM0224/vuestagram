@@ -9,14 +9,21 @@
     <img src="./assets/logo.png" class="logo" />
   </div>
 
-  <Container :postData="postData" />
-  <button type="button" @click="btnNum++, more()">더보기</button>
+  <button
+    type="button"
+    v-for="(item, idx) in tabs"
+    :key="idx" @click="tabSelected = idx"
+  >{{ item }}</button>
 
-  {{ btnNum }}
+  <Container
+    :postData="postData"
+    :tabSelected="tabSelected"
+    :imgUrl="imgUrl" />
+  <button type="button" @click="more()">더보기</button>
 
   <div class="footer">
     <ul class="footer-button-plus">
-      <input type="file" id="file" class="inputfile" />
+      <input @change="upload" type="file" id="file" class="inputfile" />
       <label for="file" class="input-plus">+</label>
     </ul>
  </div>
@@ -32,7 +39,10 @@ export default {
   data(){
     return {
       postData: PostData,
-      btnNum: 0,
+      linkNum: 0,
+      tabs: ['탭1', '탭2', '탭3'],
+      tabSelected: 0,
+      imgUrl: ''
     }
   },
   components: {
@@ -40,19 +50,20 @@ export default {
   },
   methods: {
     more(){
-      let link = '';
-
-      if(this.btnNum === 1){
-        link = 'https://codingapple1.github.io/vue/more0.json';
-      } else if (this.btnNum === 2) {
-        link = 'https://codingapple1.github.io/vue/more1.json';
-      }
-
-      axios.get(link)
+      axios.get(`https://codingapple1.github.io/vue/more${this.linkNum}.json`)
       .then((result) => { //data: GET요청으로 가져온 데이터
         // 요청 성공 시 실행할 코드
         this.postData.push(result.data);
+        this.linkNum++;
       })
+    },
+    upload(event){
+      //파일 업로드 시 실행할 코드
+      let file = event.target.files; //업로드한 파일 정보
+      console.log(file[0]) //파일 정보
+      this.imgUrl = URL.createObjectURL(file[0]); //파일 URL 생성
+      console.log(this.imgUrl)
+      this.tabSelected = 1; //다음 페이지로 이동
     }
   },
 }
