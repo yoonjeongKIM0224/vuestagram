@@ -21,9 +21,9 @@
 
     <!-- 글작성페이지 -->
     <div v-if="tabSelected === 2">
-        <div class="upload-image"></div>
+        <div class="upload-image" :style="{ backgroundImage: `url(${imgUrl})` }"></div>
         <div class="write">
-            <textarea class="write-box">write!</textarea>
+            <textarea class="write-box" @input="$emit('newPost', $event.target.value)">write!</textarea>
         </div>
     </div>
 </template>
@@ -32,15 +32,19 @@
 import Post from './ThePost.vue';
 
 export default {
-name: 'TheContaienr',
-props: {
-    postData: Array,
-    tabSelected: Number,
-    imgUrl: String
-},
-components: {
-    Post,
-}
+    name: 'TheContaienr',
+    data(){
+        return {
+        }
+    },
+    props: {
+        postData: Array,
+        tabSelected: Number,
+        imgUrl: String
+    },
+    components: {
+        Post,
+    }
 }
 </script>
 
